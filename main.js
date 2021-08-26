@@ -1,7 +1,7 @@
 const CANVAS_HEIGHT = 700;
 const CANVAS_WIDTH = 2000;
 const FRAME_RATE = 33.33;
-let CAT_SPEED = 15;
+let CAT_SPEED = 30;
 const GRAVITY = 1;
 
 const EVENT_TYPES = {
@@ -30,7 +30,7 @@ const paintingImage = new Image();
 const frameImage = new Image();
 const timeFrameImage = new Image();
 
-let score = 19;
+let score = 18;
 let timeOut = false;
 
 const countScore = () => {
@@ -54,7 +54,7 @@ const gameOverText = () => {
   ctx.font = "50px Helvetica";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
-  ctx.fillText("YOU LOST! GTFO, LOSER", 750, 200);
+  ctx.fillText("YOU LOST! LOSER", 820, 230);
 };
 
 // COUNTER ------------>
@@ -63,17 +63,17 @@ const gameOverText = () => {
 
 function hasHitBottomBounds(sprite) {
   const bounds = sprite.getGlobalBounds();
-  return bounds.y + bounds.height >= CANVAS_HEIGHT - 30;
+  return Math.abs(bounds.y + bounds.height >= CANVAS_HEIGHT - 45);
 }
 
 function hasHitLeftBounds(sprite) {
   const bounds = sprite.getGlobalBounds();
-  return bounds.x <= 90;
+  return bounds.x <= 150;
 }
 
 function hasHitRightBounds(sprite) {
   const bounds = sprite.getGlobalBounds();
-  return bounds.x + bounds.width >= CANVAS_WIDTH - 110;
+  return Math.abs(bounds.x + bounds.width >= CANVAS_WIDTH - 85);
 }
 
 function checkSpriteContact(spriteOne, spriteTwo) {
@@ -111,7 +111,7 @@ class Sprite {
     this.gravitySpeed++;
     // clamping --->
     if (this.y + this.gravitySpeed + this.height >= CANVAS_HEIGHT - 30) {
-      this.y = CANVAS_HEIGHT - 30 - this.height;
+      this.y = CANVAS_HEIGHT - 50 - this.height;
       // not clamping ----->
     } else {
       this.y += this.gravitySpeed;
@@ -157,7 +157,7 @@ class House extends Sprite {
 
 class Cat extends Sprite {
   constructor() {
-    super(150, 470, 50, 50, catImage);
+    super(150, 474, 80, 80, catImage);
   }
 }
 
@@ -188,11 +188,12 @@ class Furniture extends Sprite {
     this.img.src = "./images/rubbleM.PNG";
     this.width = 60;
     this.height = 40;
-    this.y = 480;
+    this.y = 620;
   };
   destroyL = () => {
     this.width = 100;
     this.height = 80;
+    this.y = 502;
     this.img.src = "./images/rubbleL.PNG";
     score++;
   };
@@ -228,9 +229,9 @@ class HouseState {
 
     this._cat = new Cat();
     this._house = new House();
-    this._couch = new Furniture(120, 451, 80, 70, couchImage);
-    this._lamp = new Furniture(210, 360, 60, 160, lampImage);
-    this._painting = new Furniture(120, 350, 80, 70, paintingImage);
+    this._couch = new Furniture(180, 540, 120, 120, couchImage);
+    this._lamp = new Furniture(290, 450, 90, 210, lampImage);
+    this._painting = new Furniture(180, 400, 120, 110, paintingImage);
   }
 
   handleInput = () => {
@@ -251,7 +252,7 @@ class HouseState {
       }
       if (event.key === KEY_MAP.w && this._jumpsCount < 1) {
         this._jumpsCount++;
-        this._cat.move(0, -110);
+        this._cat.move(0, -150);
       }
 
       // DESTROYING OBJECTS ------->
@@ -362,7 +363,7 @@ class GameOrigin {
     _frame: new TimeFrame(),
 
     stats: function () {
-      this._frame.width += 10;
+      this._frame.width += 5;
       if (this._frame.width === 1300) {
         timeOut = true;
 
