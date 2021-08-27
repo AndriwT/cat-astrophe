@@ -8,7 +8,7 @@ const EVENT_TYPES = {
   KEYBOARD_EVENT: "KEYBOARD_EVENT",
 };
 
-// KEY MAPPING ------>
+// ----------------------------------------------------------> KEY MAPPING
 
 const KEY_MAP = {
   Enter: "Enter",
@@ -21,6 +21,8 @@ const KEY_MAP = {
 const canvas = document.getElementById("canvas");
 
 const ctx = canvas.getContext("2d");
+
+// ----------------------------------------------------------> IMAGE CREATIONS
 
 const catImage = new Image();
 const houseImage = new Image();
@@ -57,8 +59,12 @@ const startBannerImage = new Image();
 const winImage = new Image();
 const loseImage = new Image();
 
+// ----------------------------------------------------------> WIN/LOSE PARAMETERS
+
 let score = 0;
 let timeOut = false;
+
+// ----------------------------------------------------------> TEXT RENDERING FUNCTIONS
 
 const countScore = () => {
   ctx.fillStyle = "teal";
@@ -102,9 +108,7 @@ const gameOverText = () => {
   ctx.fillText("bad cat!!", 840, 420);
 };
 
-// COUNTER ------------>
-
-// BOUNDARIES ---->
+/// ----------------------------------------------------------> BOUNDARIES
 
 function hasHitBottomBounds(sprite) {
   const bounds = sprite.getGlobalBounds();
@@ -140,6 +144,8 @@ function checkSpriteContact(spriteOne, spriteTwo) {
 canvas.height = CANVAS_HEIGHT;
 canvas.width = CANVAS_WIDTH;
 canvas.style.backgroundColor = "#E2FDFF";
+
+// ----------------------------------------------------------> MAIN SPRITE CLASS
 
 class Sprite {
   constructor(x, y, width, height, img) {
@@ -244,6 +250,8 @@ class Furniture extends Sprite {
   };
 }
 
+// ----------------------------------------------------------> LOADING IMAGES ONLOAD
+
 window.onload = () => {
   async function startGame() {
     await loadImg(timeFrameImage, "./images/timeframe.PNG");
@@ -284,6 +292,8 @@ window.onload = () => {
   }
   startGame();
 };
+
+// ------------------------------------------> HOUSE LEVEL CLASS - OBJECTS DEFINITIONS, DRAW, DESTROY, APPLY GRAVITY
 
 class HouseState {
   _gameData;
@@ -358,11 +368,6 @@ class HouseState {
     if (!event) return;
 
     if (event.type === EVENT_TYPES.KEYBOARD_EVENT) {
-      // if (event.key === KEY_MAP.Enter) {
-      //   const houseState = new HouseState(this._gameData);
-      //   this._gameData.state.updateState(houseState);
-      // }
-
       if (event.key === KEY_MAP.d) {
         if (!hasHitRightBounds(this._cat)) {
           this._cat.move(movement, 0);
@@ -378,7 +383,7 @@ class HouseState {
         this._cat.move(0, -170);
       }
 
-      // DESTROYING OBJECTS -------------------------------------------->
+      // -------------------------------------------------------------------> DESTROYING OBJECTS
       if (
         event.key === KEY_MAP.space &&
         checkSpriteContact(this._cat, this._lamp) &&
@@ -481,22 +486,17 @@ class HouseState {
 
   update = () => {
     if (timeOut === true) {
+      // ----------------------------------------------> CHANGE STATE TO GAME OVER
       const gameOver = new GameOver(this._gameData);
       this._gameData.state.updateState(gameOver);
     }
 
-    // if timer runs out, change to gameover screen
-    // const gameover = new Gameover(this._gameData);
-    // this._gameData.state.updateState(gameover);
-
     if (score === 10) {
+      // ----------------------------> CHANGING THE AMOUNT OF OBJECTS DESTROYED TO WIN
+      // ----------------------------------------------> CHANGE STATE TO VICTORY
       const victory = new Victory(this._gameData);
       this._gameData.state.updateState(victory);
     }
-
-    // if all items break change to victory screen
-    // const victory = new Victory(this._gameData);
-    // this._gameData.state.updateState(victory);
 
     if (!hasHitBottomBounds(this._cat)) {
       this._cat.applyGravity();
@@ -569,6 +569,8 @@ class HouseState {
   };
 }
 
+// ----------------------------------------------------------------> START MENU CLASS
+
 class StartMenu {
   _gameData;
   _startBanner;
@@ -593,10 +595,9 @@ class StartMenu {
   draw = () => {
     this._startBanner.draw();
     startMenuText();
-    //draw gameover stuff here
   };
 }
-
+// ---------------------------------------------------> VICTORY CLASS
 class Victory {
   _gameData;
   constructor(gameData) {
@@ -610,11 +611,9 @@ class Victory {
   draw = () => {
     this._winBanner.draw();
     victoryText();
-
-    // draw victory stuff
   };
 }
-
+// -------------------------------------------------> GAME OVER CLASS
 class GameOver {
   _gameData;
   _loseBanner;
@@ -629,9 +628,10 @@ class GameOver {
   draw = () => {
     this._loseBanner.draw();
     gameOverText();
-    //draw gameover stuff here
   };
 }
+
+// ---------------------------------------------------------------------> GAME MAIN RUNNER
 
 class GameOrigin {
   _frame;
@@ -642,7 +642,7 @@ class GameOrigin {
     _frame: new TimeFrame(),
 
     stats: function () {
-      this._frame.width += 2; // <------------------------------------- CHANGING THE TIME OF THE HUMAN GETTING HOME
+      this._frame.width += 2; // -------------------------------------> CHANGING THE TIME OF THE HUMAN GETTING HOME
       if (this._frame.width >= 1300) {
         timeOut = true;
       }
@@ -688,46 +688,7 @@ class GameOrigin {
   };
 }
 
-//-reformat house layout (divided by rooms)
-//-implement logic to switch to Victory or Game Over
-//-add assets to Victory and Game Over
-//-diagonal or arc jumping
-//-Flipping image based on direction
-//-create main screen (start)
-//-create GAME OVER screen ---> maybe animation of human getting home
-//-create WIN screen ----> maybe animation of cat jumping happily
-//-
-
-// const game = new GameOrigin();
-
-// const background = new Image();
-// background.src = "./images/house-bg.PNG";
-
-// Make sure the image is loaded first otherwise nothing will draw.
-// window.onload = function () {
-//   ctx.drawImage(background, 300, 300, 0, 0);
-// ctx.fillRect(0, 0, 300, 300);
-// };
-
-// var img = new Image();
-// img.src = 'canvas_createpattern.png';
-// img.onload = function() {
-//   var pattern = ctx.createPattern(img, 'repeat');
-//   ctx.fillStyle = pattern;
-//   ctx.fillRect(0, 0, 300, 300);
-// };
-
-//
-
-///
-
-//
-///
-///
-//
-///
-//
-//
+//---------------------------------------------------------------------------> STATE
 
 class State {
   _currentState;
