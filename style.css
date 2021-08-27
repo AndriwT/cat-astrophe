@@ -1,25 +1,11 @@
 
 
-
-
-.game-title {
-  /* margin-left: 500px;
-  margin-bottom: 0; */
-  /* margin: 30px auto 0 auto; */
-  margin-top: 50px;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  font-family: Helvetica, Arial, sans-serif;
-  color: teal;
-}
-
 body {
   background: #E2FDFF;
 }
 
 .canvas-container {
+  margin-top: 90px;
   display: flex;
   justify-content: center;
   flex-direction: column;
